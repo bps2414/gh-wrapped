@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="__THEME__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GitHub Wrapped</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Martian+Mono:wdth,wght@75..112.5,100..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1D35D8;     /* tinta azul ultramar */
+  --deep:#0E1F8F;    /* sobreposição de azul */
+  --fluo:#FF3E9A;    /* rosa flúor */
+  --paper:#F1F3FA;   /* papel frio */
+  --sun:#FFE03A;     /* amarelo riso, pontual */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-snap-type:y proximity;background:var(--ink)}
+body{background:var(--ink);color:var(--paper);font-family:Archivo,system-ui,sans-serif;font-stretch:100%;-webkit-font-smoothing:antialiased;overflow-x:hidden;counter-reset:pg}
+
+/* páginas do zine: alternam papel-sobre-azul e azul-sobre-papel */
+.pg{min-height:100svh;scroll-snap-align:start;position:relative;display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(48px,8vw,120px) clamp(16px,7vw,112px);overflow:hidden;counter-increment:pg;--fg:var(--paper);--bg:var(--ink);background:var(--bg);color:var(--fg)}
+.pg.paper{--fg:var(--ink);--bg:var(--paper)}
+.pg.blue{background-image:radial-gradient(circle,#ffffff12 1px,transparent 1.6px);background-size:7px 7px}
+.pg::after{content:counter(pg,decimal-leading-zero);position:absolute;right:clamp(16px,3vw,40px);bottom:clamp(14px,2.4vw,32px);font-stretch:62%;font-weight:600;font-size:15px;opacity:.6}
+.in{max-width:1180px;width:100%;margin:0 auto}
+
+.hd{font-stretch:68%;font-weight:850;font-size:clamp(44px,8.2vw,124px);line-height:.88;letter-spacing:-.01em;max-width:15ch;text-wrap:balance}
+.num{font-stretch:125%;font-weight:900;font-size:clamp(84px,18.5vw,280px);line-height:.8;letter-spacing:-.035em;font-variant-numeric:tabular-nums;
+  text-shadow:.03em .022em 0 var(--fluo)}
+.tx{font-size:clamp(18px,1.9vw,24px);line-height:1.42;max-width:36ch;margin-top:clamp(20px,2.6vw,34px);text-wrap:pretty}
+.tx b{font-weight:750}
+.sm{font-size:15px;line-height:1.4;opacity:.72}
+.gap{margin-top:clamp(28px,4vw,56px)}
+
+/* retícula do ano */
+.ht{display:block;width:100%;height:auto;overflow:visible}
+.ht circle{fill:var(--fluo)}
+.ht circle.z{fill:var(--fg);opacity:.22}
+.ht circle.s{fill:var(--sun)}
+.paper .ht circle.s{fill:var(--ink)}
+.hero .ht circle{transform-box:fill-box;transform-origin:center;transform:scale(0);animation:print .5s cubic-bezier(.3,1.5,.5,1) forwards;animation-delay:calc(var(--x)*22ms + 300ms)}
+@keyframes print{to{transform:scale(1)}}
+
+/* capa */
+.hero{justify-content:space-between;gap:48px}
+.who{display:flex;align-items:center;gap:14px;font-weight:650;font-size:clamp(16px,1.6vw,20px)}
+.who img{width:44px;height:44px;border-radius:50%;filter:grayscale(1) contrast(1.2);mix-blend-mode:screen}
+.hero h1{font-stretch:62%;font-weight:900;font-size:clamp(64px,min(17vw,24svh),260px);line-height:.8;letter-spacing:-.01em;text-transform:none}
+.hero h1{padding-bottom:.12em}
+.hero h1 span{display:block;font-stretch:125%;font-size:.52em;letter-spacing:-.04em;color:var(--fluo);margin-top:.12em}
+.hero .dates{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:14px;font-size:15px;opacity:.72}
+
+/* colunas de pontos (horas, dias, meses) */
+.dots{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:clamp(3px,.7vw,10px);align-items:end}
+.dots div{display:flex;flex-direction:column-reverse;align-items:center;gap:clamp(3px,.5vw,7px)}
+.dots i{width:100%;max-width:26px;aspect-ratio:1;border-radius:50%;background:currentColor;opacity:.16}
+.dots i.f{opacity:1;background:var(--fluo)}
+.dots div.pk i.f{background:var(--fg)}
+.dots small{font-size:clamp(10px,1vw,13px);opacity:.7;margin-top:8px;font-stretch:75%}
+
+/* repos */
+.rank{list-style:none;margin-top:clamp(28px,4vw,52px);counter-reset:r}
+.rank li{counter-increment:r;display:grid;grid-template-columns:clamp(40px,6vw,80px) 1fr auto;gap:clamp(10px,2vw,28px);align-items:baseline;
+  padding:clamp(14px,1.8vw,22px) 0;border-top:2px solid color-mix(in srgb,var(--fg) 18%,transparent)}
+.rank li::before{content:counter(r);font-stretch:62%;font-weight:900;font-size:clamp(30px,4vw,56px);line-height:1;color:var(--fluo)}
+.rank h3{font-stretch:75%;font-weight:800;font-size:clamp(24px,3.4vw,46px);line-height:1;letter-spacing:-.005em;overflow-wrap:anywhere}
+.rank p{font-size:15px;opacity:.68;margin-top:6px;max-width:58ch;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical}
+.rank .c{font-stretch:125%;font-weight:900;font-size:clamp(26px,3.6vw,50px);font-variant-numeric:tabular-nums;text-align:right;line-height:1}
+.rank .c small{display:block;font-stretch:100%;font-weight:500;font-size:13px;opacity:.6;margin-top:4px}
+.lock{display:inline-block;font-stretch:100%;font-weight:600;font-size:12px;vertical-align:middle;margin-left:10px;padding:3px 8px;border-radius:4px;background:color-mix(in srgb,var(--fg) 12%,transparent);letter-spacing:0}
+
+/* linguagens */
+.bars{margin-top:clamp(28px,4vw,52px);display:flex;flex-direction:column;gap:14px}
+.bar{display:grid;grid-template-columns:clamp(110px,16vw,190px) 1fr auto;gap:16px;align-items:center;font-weight:650;font-size:clamp(16px,1.6vw,20px)}
+.bar em{font-style:normal}
+.bar span{justify-self:start;height:clamp(18px,2.4vw,30px);background:var(--fluo);border-radius:2px;min-width:3px}
+.bar:not(:first-child) span{background:color-mix(in srgb,var(--fg) 75%,transparent)}
+.bar b{font-stretch:125%;font-weight:900;font-variant-numeric:tabular-nums;min-width:3.2ch;text-align:right}
+
+/* palavras */
+.words{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:clamp(26px,3.4vw,44px);align-items:baseline;max-width:1000px}
+.words span{font-stretch:70%;font-weight:850;line-height:.95}
+.words span:first-child{color:var(--fluo)}
+.words sup{font-stretch:100%;font-weight:500;font-size:13px;opacity:.6;margin-left:4px}
+
+.quote{margin-top:clamp(26px,3.4vw,44px);font-stretch:80%;font-weight:600;font-size:clamp(20px,2.4vw,32px);line-height:1.2;max-width:28ch}
+.quote::before{content:'“';color:var(--fluo)}
+.quote::after{content:'”';color:var(--fluo)}
+.quote + .sm{margin-top:10px}
+.pm{display:flex;flex-direction:column;gap:.08em}
+.pm .num:last-child{color:var(--fluo);text-shadow:.03em .022em 0 var(--ink)}
+.two{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,90px);align-items:end}
+@media (max-width:780px){.two{grid-template-columns:1fr}}
+
+.stars{display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:clamp(26px,3.4vw,44px);max-width:1000px}
+.stars span{font-stretch:75%;font-weight:750;font-size:clamp(20px,2.2vw,30px)}
+.stars b{color:var(--fluo);font-stretch:100%;font-weight:900;margin-left:6px}
+
+.persona{font-stretch:62%;font-weight:900;font-size:clamp(84px,20vw,320px);line-height:.78;letter-spacing:-.01em;color:var(--fluo)}
+
+.dl{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.dl a{color:var(--ink);background:var(--paper);text-decoration:none;font-weight:700;font-size:16px;padding:14px 22px;border-radius:999px}
+.dl a:focus-visible,.dl a:hover{outline:3px solid var(--fluo);outline-offset:3px}
+.preview{width:min(460px,100%);aspect-ratio:4/5;margin-top:32px;display:block;border-radius:6px;box-shadow:12px 12px 0 var(--fluo)}
+
+/* ---------- card exportável (modo #card=feed|story) ---------- */
+.card{width:1080px;height:1350px;background:var(--ink);background-image:radial-gradient(circle,#ffffff14 1.3px,transparent 2px);background-size:9px 9px;
+  --fg:var(--paper);--bg:var(--ink);color:var(--paper);padding:78px 80px 72px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.card.story{height:1920px;padding:150px 80px 140px}
+.c-top{display:flex;justify-content:space-between;align-items:center;font-size:30px;font-weight:650}
+.c-top img{width:64px;height:64px;border-radius:50%;filter:grayscale(1) contrast(1.2);mix-blend-mode:screen;vertical-align:middle;margin-right:18px}
+.c-top span{opacity:.75;font-weight:500;font-size:26px}
+.c-title{font-stretch:62%;font-weight:900;font-size:150px;line-height:.82;letter-spacing:-.005em}
+.story .c-title{font-size:200px}
+.c-num{font-stretch:125%;font-weight:900;font-size:230px;line-height:.8;letter-spacing:-.04em;text-shadow:8px 6px 0 var(--fluo)}
+.c-num + p{font-size:32px;font-weight:600;margin-top:18px}
+.c-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px 40px}
+.c-grid div{border-top:3px solid #ffffff38;padding-top:16px}
+.c-grid b{display:block;font-stretch:125%;font-weight:900;font-size:76px;line-height:.9;letter-spacing:-.03em}
+.c-grid span{font-size:26px;font-weight:550;opacity:.85}
+.c-band{background:var(--fluo);color:var(--ink);margin:0 -80px -72px;padding:30px 80px 34px;display:flex;justify-content:space-between;align-items:baseline;gap:30px}
+.story .c-band{margin-bottom:-140px;padding-bottom:110px;padding-top:40px}
+.c-band b{font-stretch:62%;font-weight:900;font-size:96px;line-height:.85}
+.c-band{align-items:flex-end}
+.c-band span{font-size:24px;font-weight:600;text-align:right;line-height:1.25}
+.c-band span strong{display:block;font-size:34px;font-weight:800;font-stretch:80%}
+body.cardmode{background:var(--ink);width:1080px;overflow:hidden}
+
+/* ---------- arte ASCII ---------- */
+.aw{width:100%;overflow:hidden;line-height:0}
+.ascii{display:inline-block;font-family:'Martian Mono',ui-monospace,monospace;font-stretch:100%;font-weight:500;line-height:1.08;white-space:pre;margin:0;color:var(--fg)}
+.ascii .d{opacity:.28}
+.ascii .s{background:var(--fg);color:var(--bg)}
+.ascii .pk{font-weight:800}
+.ascii .lab{opacity:.55;font-weight:400}
+
+/* ---------- tema mono: preto e branco, tudo em Martian Mono ---------- */
+[data-theme=mono]{--ink:#000;--paper:#fff;--fluo:#fff;--sun:#fff;--gray:#7d7d7d}
+[data-theme=mono] body{font-family:'Martian Mono',ui-monospace,monospace}
+[data-theme=mono] .pg.paper{--fluo:#000}
+[data-theme=mono] .pg.blue{background-image:radial-gradient(circle,#ffffff1f 1px,transparent 1.4px)}
+[data-theme=mono] .hd{font-size:clamp(34px,6.2vw,92px);line-height:.98;letter-spacing:-.03em;max-width:18ch}
+[data-theme=mono] .num{font-size:clamp(64px,14.5vw,220px);letter-spacing:-.06em;text-shadow:.035em .025em 0 var(--gray)}
+[data-theme=mono] .pm .num:last-child{color:transparent;-webkit-text-stroke:2px var(--fg);text-shadow:none}
+[data-theme=mono] .hero h1{font-size:clamp(52px,min(13vw,19svh),200px);letter-spacing:-.06em}
+[data-theme=mono] .hero h1 span{color:var(--gray)}
+[data-theme=mono] .persona{font-size:clamp(56px,13vw,210px);letter-spacing:-.06em}
+[data-theme=mono] .dots i{border-radius:1px}
+[data-theme=mono] .dots i.f{background:var(--gray)}
+[data-theme=mono] .dots div.pk i.f{background:var(--fg)}
+[data-theme=mono] .bar:not(:first-child) span{background:var(--gray)}
+[data-theme=mono] .words span{letter-spacing:-.04em}
+[data-theme=mono] .card{background-image:radial-gradient(circle,#ffffff1a 1.3px,transparent 2px)}
+[data-theme=mono] .c-title{font-size:118px;letter-spacing:-.06em;line-height:.92}
+[data-theme=mono] .story .c-title{font-size:150px}
+[data-theme=mono] .c-num{font-size:196px;letter-spacing:-.07em;text-shadow:9px 7px 0 #5e5e5e}
+[data-theme=mono] .c-grid b{font-size:64px;letter-spacing:-.06em}
+[data-theme=mono] .c-grid span,[data-theme=mono] .c-num + p{font-size:24px}
+[data-theme=mono] .c-band b{font-size:70px;letter-spacing:-.05em}
+[data-theme=mono] .c-band span{font-size:20px}
+[data-theme=mono] .c-band span strong{font-size:28px}
+[data-theme=mono] .c-top{font-size:26px}
+[data-theme=mono] .c-top span{font-size:20px}
+.previews{display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap;margin-top:32px}
+.previews img{display:block;border-radius:6px;box-shadow:12px 12px 0 var(--fluo)}
+.previews img.f{width:min(380px,100%)}
+.previews img.s{width:min(270px,70%)}
+[data-theme=mono] .previews img{box-shadow:12px 12px 0 var(--gray)}
+
+@media (prefers-reduced-motion:reduce){.hero .ht circle{animation:none;transform:none}}
+</style>
+</head>
+<body>
+<nav hidden></nav>
+<main id="app"></main>
+<script type="application/json" id="data">__DATA__</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const T = D.totals;
+const fmt = n => Math.round(n).toLocaleString('pt-BR');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dt = (s, o = {day:'numeric', month:'long'}) => new Date(s + 'T12:00:00').toLocaleDateString('pt-BR', o);
+const MES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const DIA = ['dom','seg','ter','qua','qui','sex','sáb'];
+const DIAF = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const pl = (n, s, p) => `${fmt(n)} ${n === 1 ? s : p}`;
+const COMMITS = T.commitsRead ?? T.commits;
+
+// o ano em retícula: um ponto por dia, raio pelo volume do dia
+function halftone(streak) {
+  const cell = 10, off = new Date(D.days[0].date + 'T12:00:00').getDay();
+  const max = Math.max(...D.days.map(d => d.count));
+  const cols = Math.ceil((D.days.length + off) / 7);
+  let s = '';
+  D.days.forEach((d, i) => {
+    const k = i + off, x = Math.floor(k / 7), y = k % 7;
+    const r = d.count ? (0.2 + 0.8 * Math.sqrt(d.count / max)) * cell * 0.52 : cell * 0.08;
+    const inS = streak && d.date >= D.longest.start && d.date <= D.longest.end;
+    s += `<circle class="${d.count ? (inS ? 's' : '') : 'z'}" cx="${x * cell + cell / 2}" cy="${y * cell + cell / 2}" r="${r.toFixed(2)}" style="--x:${x}"/>`;
+  });
+  return `<svg class="ht" viewBox="0 0 ${cols * cell} ${7 * cell}" role="img" aria-label="Contribuições por dia no período">${s}</svg>`;
+}
+const MONO = document.documentElement.dataset.theme === 'mono';
+const SUF = MONO ? '-mono' : '';
+const OFF = new Date(D.days[0].date + 'T12:00:00').getDay();
+// montanha ASCII: uma coluna a cada 3 dias, altura pela raiz do total (o pico não engole o resto)
+const BUCKET = 3;
+function mountain(rows) {
+  const w = [];
+  D.days.forEach((d, i) => { const k = Math.floor(i / BUCKET); w[k] = (w[k] || 0) + d.count; });
+  const max = Math.max(...w), pk = w.indexOf(max), ramp = '@%#*+=-:';
+  let out = '';
+  for (let y = rows - 1; y >= 0; y--) {
+    let line = '';
+    w.forEach((v, x) => {
+      const f = Math.sqrt(v / max) * rows - y;
+      let ch = f >= 1 ? ramp[Math.min(ramp.length - 1, Math.floor(y / rows * ramp.length))] : f > 0 ? (f > .5 ? ':' : '.') : ' ';
+      if (x === pk && y === rows - 1) ch = '^';
+      if (!v && y === 0) line += '<span class="d">.</span>';
+      else line += x === pk && ch !== ' ' ? `<span class="pk">${ch}</span>` : ch;
+    });
+    out += line + '\n';
+  }
+  const lab = Array(w.length).fill(' ');
+  let last = '';
+  D.days.forEach((d, i) => {
+    const m = d.date.slice(5, 7), k = Math.floor(i / BUCKET);
+    if (m !== last && k + 3 <= w.length && lab.slice(Math.max(0, k - 2), k + 5).every(c => c === ' ')) { [...MES[+m - 1]].forEach((c, j) => lab[k + j] = c); }
+    last = m;
+  });
+  out += '-'.repeat(w.length) + '\n' + `<span class="lab">${lab.join('')}</span>`;
+  return `<div class="aw"><pre class="ascii" role="img" aria-label="Contribuições por semana">${out}</pre></div>`;
+}
+// calendário ASCII: um caractere por dia, sequência mais longa em negativo
+function asciiCal(streak) {
+  const max = Math.max(...D.days.map(d => d.count)), ramp = ':-=+*#%@';
+  const cols = Math.ceil((D.days.length + OFF) / 7), g = Array.from({length: 7}, () => Array(cols).fill(' '));
+  D.days.forEach((d, i) => {
+    const k = i + OFF, x = Math.floor(k / 7), y = k % 7;
+    const inS = streak && d.date >= D.longest.start && d.date <= D.longest.end;
+    g[y][x] = !d.count ? '<span class="d">.</span>'
+      : `<span class="${inS ? 's' : ''}">${ramp[Math.min(7, Math.floor(Math.sqrt(d.count / max) * 8))]}</span>`;
+  });
+  return `<div class="aw"><pre class="ascii" role="img" aria-label="Contribuições por dia">${g.map(r => r.join(' ')).join('\n')}</pre></div>`;
+}
+const yearArt = (streak, rows = 13) => !MONO ? halftone(streak) : streak ? asciiCal(true) : mountain(rows);
+
+function dotcols(vals, labels, rows = 10) {
+  const max = Math.max(...vals), pk = vals.indexOf(max);
+  return `<div class="dots">${vals.map((v, i) => {
+    const f = v ? Math.max(1, Math.round(v / max * rows)) : 0;
+    return `<div class="${i === pk ? 'pk' : ''}" title="${labels[i]}: ${fmt(v)}">${'<i class="f"></i>'.repeat(f)}${'<i></i>'.repeat(rows - f)}<small>${labels[i]}</small></div>`;
+  }).join('')}</div>`;
+}
+
+const S = [];
+const pg = (cls, html) => S.push(`<section class="pg ${cls}"><div class="in">${html}</div></section>`);
+const range = `${dt(D.from,{day:'numeric',month:'short',year:'numeric'})} a ${dt(D.to,{day:'numeric',month:'short',year:'numeric'})}`;
+
+function card(kind) {
+  const top = D.topRepos[0];
+  return `<div class="card ${kind}">
+    <div>
+      <div class="c-top"><div><img src="${esc(D.user.avatar)}" alt="">@${esc(D.user.login)}</div><span>${dt(D.from,{month:'short',year:'numeric'})} a ${dt(D.to,{month:'short',year:'numeric'})}</span></div>
+    </div>
+    <div class="c-title">Meu ano<br>no GitHub</div>
+    ${yearArt(false, kind === 'story' ? 34 : 18)}
+    <div><div class="c-num">${fmt(T.contributions)}</div><p>contribuições em 365 dias</p></div>
+    <div class="c-grid">
+      <div><b>${fmt(COMMITS)}</b><span>commits</span></div>
+      <div><b>${D.longest.len}</b><span>dias seguidos</span></div>
+      <div><b>${fmt(T.reposTouched)}</b><span>repositórios</span></div>
+      <div><b>${fmt(D.starsGained)}</b><span>estrelas novas</span></div>
+    </div>
+    <div class="c-band"><b>${esc(D.persona.title)}</b><span>repo do ano<strong>${esc(top?.short || '—')}</strong>${fmt(top?.commits || 0)} commits</span></div>
+  </div>`;
+}
+
+const cardMode = (location.hash.match(/^#card=(feed|story)/) || [])[1];
+if (cardMode) {
+  document.body.classList.add('cardmode');
+  document.getElementById('app').innerHTML = card(cardMode === 'story' ? 'story' : 'feed');
+} else {
+  // 1. capa
+  pg('blue hero', `
+    <div class="who"><img src="${esc(D.user.avatar)}" alt="">@${esc(D.user.login)}</div>
+    <h1>Um ano<span>de commits</span></h1>
+    <div>${yearArt(false, 16)}<div class="dates"><span>${range}</span><span>${MONO ? 'cada coluna são três dias; quanto mais alta, mais você contribuiu' : 'cada ponto é um dia; quanto maior, mais você contribuiu'}</span></div></div>`);
+
+  // 2. total
+  const perActive = T.contributions / Math.max(1, D.activeDays);
+  pg('paper', `
+    <div class="num">${fmt(T.contributions)}</div>
+    <p class="tx">contribuições em 365 dias. Foram <b>${fmt(COMMITS)} commits</b> em <b>${pl(T.reposTouched,'repositório','repositórios')}</b>, ${fmt(T.commitsPrivate ?? 0)} deles em código privado, mais <b>${pl(T.prs,'pull request','pull requests')}</b> e ${pl(T.issues,'issue','issues')}.</p>
+    <p class="tx">Você apareceu em <b>${D.activeDays} dias</b>, com média de ${perActive.toFixed(1).replace('.',',')} contribuições cada.</p>`);
+
+  // 3. sequência
+  pg('blue', `
+    <h2 class="hd">${D.longest.len} dias seguidos sem deixar o quadrado vazio</h2>
+    <p class="tx">De ${dt(D.longest.start)} a ${dt(D.longest.end)}, ${MONO ? 'em negativo' : 'em amarelo'}. O dia mais cheio foi <b>${dt(D.bestDay.date)}</b>, uma ${DIAF[new Date(D.bestDay.date+'T12:00:00').getDay()]}, com ${fmt(D.bestDay.count)} contribuições.${D.current > 1 ? ` A sequência atual está em ${D.current} dias.` : ''}</p>
+    <div class="gap">${yearArt(true)}</div>`);
+
+  // 4. horas
+  {
+    const pk = D.hours.indexOf(Math.max(...D.hours)), n = D.hours.reduce((a,b)=>a+b,0);
+    const night = (D.hours.slice(0,5).reduce((a,b)=>a+b,0) + D.hours[22] + D.hours[23]) / n;
+    pg('paper', `<div class="two">
+      <div>
+        <h2 class="hd">O seu horário de pico é às ${pk}h</h2>
+        <p class="tx"><b>${Math.round(night*100)}%</b> dos commits saíram entre 22h e 5h.${D.latest ? ` O mais tardio foi às <b>${D.latest.time}</b> de ${dt(D.latest.date)}:` : ''}</p>
+        ${D.latest ? `<p class="quote">${esc(D.latest.msg)}</p><p class="sm">${esc(D.latest.repo)}</p>` : ''}
+      </div>
+      ${dotcols(D.hours, D.hours.map((_,h)=> h % 3 ? '' : String(h)), 12)}
+    </div>`);
+  }
+
+  // 5. semana e meses
+  {
+    const wpk = D.weekday.indexOf(Math.max(...D.weekday));
+    const mmax = Math.max(...D.months.map(m=>m.count)), mtop = D.months.find(m=>m.count===mmax);
+    pg('blue', `
+      <h2 class="hd">${DIAF[wpk][0].toUpperCase()+DIAF[wpk].slice(1)} foi o seu dia, e ${dt(mtop.month+'-15',{month:'long'})} o seu mês</h2>
+      <div class="two gap" style="align-items:end">
+        ${dotcols(D.months.map(m=>m.count), D.months.map(m=>MES[+m.month.slice(5)-1]), 10)}
+        ${dotcols(D.weekday, DIA, 10)}
+      </div>`);
+  }
+
+  // 6. repos
+  if (D.topRepos.length) {
+    pg('paper', `
+      <h2 class="hd">Onde o ano foi parar</h2>
+      <ol class="rank">${D.topRepos.slice(0,6).map(r => `<li>
+        <div><h3>${esc(r.short)}${r.private ? '<span class="lock">privado</span>' : ''}</h3><p>${r.language ? esc(r.language.name) + (r.description ? ', ' : '') : ''}${esc(r.description || '')}</p></div>
+        <div class="c">${fmt(r.commits)}<small>commits</small></div></li>`).join('')}</ol>`);
+  }
+
+  // 7. linguagens
+  if (D.languages.length) {
+    const tot = D.languages.reduce((s,l)=>s+l.commits,0), top = D.languages.slice(0,7), mx = top[0].commits;
+    pg('blue', `
+      <h2 class="hd">${esc(top[0].name)} na frente${top[1] ? `, ${esc(top[1].name)} logo atrás` : ''}</h2>
+      <p class="tx">Pela linguagem principal de cada repositório, pesada pelos seus commits nele.</p>
+      <div class="bars">${top.map(l => `<div class="bar"><em style="font-style:normal">${esc(l.name)}</em><span style="width:${(l.commits/mx*100).toFixed(1)}%"></span><b>${Math.round(l.commits/tot*100)}%</b></div>`).join('')}</div>`);
+  }
+
+  // 8. linhas + vocabulário
+  if (D.lines.sampled) {
+    const net = D.lines.adds - D.lines.dels;
+    pg('paper', `<div class="two">
+      <div class="pm"><div class="num">+${fmt(D.lines.adds)}</div><div class="num">−${fmt(D.lines.dels)}</div></div>
+      <p class="tx">linhas adicionadas e removidas. Saldo de ${net >= 0 ? '+' : '−'}${fmt(Math.abs(net))}. Commits com mais de 5 mil linhas (lockfile, build, dependência copiada) ficaram de fora da conta.</p>
+    </div>`);
+  }
+  if (D.topWords.length) {
+    const mx = D.topWords[0].count;
+    pg('blue', `
+      <h2 class="hd">A palavra que mais apareceu nos seus commits foi “${esc(D.topWords[0].word)}”</h2>
+      <div class="words">${D.topWords.map(w => `<span style="font-size:${(20 + (w.count/mx)*62).toFixed(0)}px">${esc(w.word)}<sup>${w.count}</sup></span>`).join('')}</div>
+      ${D.first ? `<p class="tx">O primeiro commit do período foi em ${dt(D.first.date)}, em ${esc(D.first.repo)}:</p><p class="quote">${esc(D.first.msg)}</p>` : ''}`);
+  }
+
+  // 9. estrelas e repos novos
+  if (D.starsGained || D.newRepos.length) {
+    const pub = D.newRepos.filter(r => !r.private).length, priv = D.newRepos.length - pub;
+    pg('paper', `
+      <div class="num">${fmt(D.starsGained)}</div>
+      <p class="tx">estrelas novas nos seus repositórios. Você também criou <b>${pl(D.newRepos.length,'repositório','repositórios')}</b>: ${pl(pub,'público','públicos')} e ${pl(priv,'privado','privados')}.</p>
+      <div class="stars">${D.starsByRepo.slice(0,10).map(r => `<span>${esc(r.name)}<b>+${r.gained}</b></span>`).join('')}</div>`);
+  }
+
+  // 10. PRs
+  if (T.prs && D.biggestPr) {
+    const p = D.biggestPr;
+    pg('blue', `
+      <h2 class="hd">${pl(T.prs,'pull request aberto','pull requests abertos')}, ${fmt(T.prsMerged)} mergeados</h2>
+      <p class="tx">O maior mexeu em ${fmt(p.additions + p.deletions)} linhas${p.merged ? ' e entrou' : ''}:</p>
+      <p class="quote">${esc(p.title)}</p><p class="sm">${esc(p.repo)}, +${fmt(p.additions)} −${fmt(p.deletions)}</p>`);
+  }
+
+  // 11. arquétipo
+  pg('paper', `
+    <p class="tx" style="margin:0 0 20px">Se o seu ano fosse uma pessoa, seria:</p>
+    <div class="persona">${esc(D.persona.title)}</div>
+    <p class="tx">${esc(D.persona.line)}</p>`);
+
+  // 12. card
+  const base = `card-${D.user.login}-${D.to}${SUF}`;
+  pg('blue', `
+    <h2 class="hd">Seus cards para postar</h2>
+    <div class="dl"><a href="${base}-feed.png" download>Baixar para o feed (4:5)</a><a href="${base}-story.png" download>Baixar para os stories (9:16)</a></div>
+    <div class="previews"><img class="f" src="${base}-feed.png" alt="Card para o feed" onerror="this.remove()"><img class="s" src="${base}-story.png" alt="Card para os stories" onerror="this.remove()"></div>`);
+
+  document.getElementById('app').innerHTML = S.join('');
+}
+// ASCII ocupa a largura toda: mede no tamanho base e escala a fonte
+const fit = () => document.querySelectorAll('pre.ascii').forEach(p => {
+  p.style.fontSize = '10px';
+  p.style.fontSize = (10 * p.parentElement.clientWidth / p.offsetWidth).toFixed(2) + 'px';
+});
+fit();
+document.fonts?.ready.then(fit);
+addEventListener('resize', fit);
+</script>
+</body>
+</html>
